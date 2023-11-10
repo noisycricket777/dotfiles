@@ -20,7 +20,7 @@ PS1='[\u@\h \W]\$ '
 alias c='clear'
 alias nf='neofetch'
 alias pf='pfetch'
-alias ls='exa -al'
+#alias ls='exa -al'
 alias shutdown='systemctl poweroff'
 alias v='nvim'
 alias ts='~/dotfiles/scripts/snapshot.sh'
@@ -30,6 +30,12 @@ alias od='~/private/onedrive.sh'
 alias rw='~/dotfiles/waybar/reload.sh'
 alias winclass="xprop | grep 'CLASS'"
 alias dot="cd ~/dotfiles"
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias ll='ls -alFh'
+alias l='ls'
+alias l.="ls -A | egrep '^\.'"
+alias listdir="ls -d */ > list"
 
 # -----------------------------------------------------
 # Window Managers
@@ -84,9 +90,28 @@ alias confb='nvim ~/dotfiles/.bashrc'
 alias notes='vim ~/notes.txt'
 
 # -----------------------------------------------------
+# PACMAN
+# -----------------------------------------------------
+
+alias unlock="sudo rm /var/lib/pacman/db.lck"
+alias rmpacmanlock="sudo rm /var/lib/pacman/db.lck"
+alias sps='sudo pacman -S'
+alias spr='sudo pacman -R'
+alias sprs='sudo pacman -Rs'
+alias sprdd='sudo pacman -Rdd'
+alias spqo='sudo pacman -Qo'
+alias spsii='sudo pacman -Sii'
+alias pacman='sudo pacman --color auto'
+alias update='sudo pacman -Syyu'
+alias upd='sudo pacman -Syyu'
+
+# -----------------------------------------------------
 # SYSTEM
 # -----------------------------------------------------
 
+alias pksyua="paru -Syu --noconfirm"
+alias upall="paru -Syu --noconfirm"
+alias upa="paru -Syu --noconfirm"
 alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias setkb='setxkbmap de;echo "Keyboard set back to de."'
 
@@ -115,3 +140,52 @@ cat ~/.cache/wal/sequences
 # -----------------------------------------------------
 echo ""
 pfetch
+
+#enabling vmware services
+alias start-vmware="sudo systemctl enable --now vmtoolsd.service"
+alias vmware-start="sudo systemctl enable --now vmtoolsd.service"
+alias sv="sudo systemctl enable --now vmtoolsd.service"
+
+
+#Cleanup orphaned packages
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
+
+#gpg
+#verify signature for isos
+alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
+alias fix-gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
+#receive the key of a developer
+alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
+alias fix-gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
+alias fix-keyserver="[ -d ~/.gnupg ] || mkdir ~/.gnupg ; cp /etc/pacman.d/gnupg/gpg.conf ~/.gnupg/ ; echo 'done'"
+
+#fixes
+alias fix-permissions="sudo chown -R $USER:$USER ~/.config ~/.local"
+
+# # ex = EXtractor for all kinds of archives
+# # usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   tar xf $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
